@@ -1,3 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class Usuarios {
   final String users;
   final String nome;
@@ -22,10 +26,10 @@ class Usuarios {
     this.tempo3,
   });
 
-  Usuarios.fromMap(Map<String, dynamic> data, String id)
+  Usuarios.fromMap(Map<String, dynamic> data, String users)
       : this(
-          users: id,
-          nome: (data['name']),
+          users: 'gmKjgCrUl7fYTvym0KAkgjCnc1z2',
+          nome:data['name'],
           tempo1: data['tempo 1'],
           tempo2: data['tempo 2'],
           tempo3: data['tempo 3'],

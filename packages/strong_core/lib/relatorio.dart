@@ -12,7 +12,7 @@ class Relatorio extends StatefulWidget {
   final Usuarios usuario;
   int dia;
   String uid;
-  //String recebesemana;
+  //recebesemana;
   int semana;
   final Usuarios relatorio;
 
@@ -23,6 +23,7 @@ class Relatorio extends StatefulWidget {
 class _RelatorioState extends State<Relatorio> {
   FirebaseUser currentUser;
   final dbRef = FirebaseDatabase.instance.reference().child("Semana 1");
+  String nome1,nome2,nome3,tempo1exer1,tempo2exer1,tempo3exer1,tempo1exer2,tempo2exer2,tempo3exer2,tempo3exer3,tempo2exer3,tempo1exer3;
 
   @override
   Widget build(BuildContext context) {
@@ -68,12 +69,32 @@ class _RelatorioState extends State<Relatorio> {
           padding: EdgeInsets.all(20),
           child: Row(children: <Widget>[
             Container(
-                child: DataTable(rows: [
+                child: DataTable(
+              columnSpacing: 15, 
+                 
+              rows: [
               DataRow(
                 cells: [
-                  DataCell(Text(widget.usuario.nome)),
-                  DataCell(Text('oi2')),
-                  //DataCell(Text("oi3")),
+                  DataCell(Text(mostraexercicios(1))),
+                  DataCell(Text(mostraexercicios(4))),
+                  DataCell(Text(mostraexercicios(5))),
+                  DataCell(Text(mostraexercicios(6))),
+                ],
+              ),
+              DataRow(
+                cells: [
+                  DataCell(Text(mostraexercicios(2))),
+                  DataCell(Text(mostraexercicios(7))),
+                  DataCell(Text(mostraexercicios(8))),
+                  DataCell(Text(mostraexercicios(9))),
+                ],
+              ),
+              DataRow(
+                cells: [
+                  DataCell(Text(mostraexercicios(3))),
+                  DataCell(Text(mostraexercicios(10))),
+                  DataCell(Text(mostraexercicios(11))),
+                  DataCell(Text(mostraexercicios(12))),
                 ],
               ),
             ], columns: [
@@ -81,7 +102,13 @@ class _RelatorioState extends State<Relatorio> {
                 label: Text("Exercicios"),
               ),
               DataColumn(
-                label: Text("Duração dos Exercicios"),
+                label: Text("Tempo 1"),
+              ),
+              DataColumn(
+                label: Text("Tempo 2"),
+              ),
+              DataColumn(
+                label: Text("Tempo 3"),
               ),
             ]))
           ]))
@@ -122,7 +149,7 @@ class _RelatorioState extends State<Relatorio> {
   } */
 
   /*  class ExerciciosView extends StatelessWidget {
-  final List<String> exercicios;
+  final List< exercicios;
 
   ExerciciosView(this.exercicios);
 
@@ -151,9 +178,10 @@ class _RelatorioState extends State<Relatorio> {
   }
   }  */
 
-  mostraexercicios() {
+  mostraexercicios(int x) {
+    
     Firestore.instance
-        .collection("users")
+        .collection('users')
         .document('gmKjgCrUl7fYTvym0KAkgjCnc1z2')
         .collection('Relatorios')
         .document('Semana 1')
@@ -161,11 +189,36 @@ class _RelatorioState extends State<Relatorio> {
         .document('Exercicios')
         .get() //lê a informação que esta guardada
         .then((value) {
-      String nome = (value.data["Exercicio 1"]["name"]);
-      print("$nome");
-      return '$nome';
+      nome1 = (value.data['Exercicio 1']['name']);
+      nome2 = (value.data['Exercicio 2']['name']);
+      nome3 = (value.data['Exercicio 3']['name']);
+
+      tempo1exer1 = (value.data['Exercicio 1']['tempo 1']);
+      tempo2exer1 = (value.data['Exercicio 1']['tempo 2']);
+      tempo3exer1 = (value.data['Exercicio 1']['tempo 3']);
+
+      tempo1exer2 = (value.data['Exercicio 2']['tempo 1']);
+      tempo2exer2 = (value.data['Exercicio 2']['tempo 2']);
+      tempo3exer2 = (value.data['Exercicio 2']['tempo 3']);
+
+      tempo1exer3 = (value.data['Exercicio 3']['tempo 1']);
+      tempo2exer3 = (value.data['Exercicio 3']['tempo 2']);
+      tempo3exer3 = (value.data['Exercicio 3']['tempo 3']);
+      
+      
     });
-    //return '$nome';
+    if( x == 1) {return '$nome1';}
+    if( x == 2) {return '$nome2';}
+    if( x == 3) {return '$nome3';}
+    if( x == 4) {return '$tempo1exer1';}
+    if( x == 5) {return '$tempo2exer1';}
+    if( x == 6) {return '$tempo3exer1';}
+    if( x == 7) {return '$tempo1exer2';}
+    if( x == 8) {return '$tempo2exer2';}
+    if( x == 9) {return '$tempo3exer2';}
+    if( x == 10) {return '$tempo1exer3';}
+    if( x == 11) {return '$tempo2exer3';}
+    if( x == 12) {return '$tempo3exer3';}    
   }
 }
 

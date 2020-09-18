@@ -329,7 +329,8 @@ class MainScreenPortraitState extends State<MainScreenPortrait> {
 
   guardatempo(String exercicioNome) {
     print('$exercicioNome');
-
+    String nomeexercicio = exercicioNome;
+    
     Firestore.instance
         .collection('users')
         .document('gmKjgCrUl7fYTvym0KAkgjCnc1z2')
