@@ -1,85 +1,204 @@
-@override
-  Widget build(BuildContext context) {
-    final mediaQueryData = MediaQuery.of(context);
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:app/rascunho.dart';
 
-    return Scaffold(
-      // Use a FutureBuilder to display a loading spinner while waiting for the
-      // VideoPlayerController to finish initializing.
-      body: Stack(
-        children: <Widget>[
-       
-        
-              Container(
-                //alignment: Alignment.topCenter,
-                height: 290, //altura do container
-                width: 400, 
+class Relatorio extends StatefulWidget {
+  Relatorio(
+      {Key key, this.dia, this.uid, this.semana, this.relatorio, this.usuario})
+      : super(key: key);
+  final Usuarios usuario;
+  int dia;
+  String uid;
+  //recebesemana;
+  int semana;
+  final Usuarios relatorio;
 
-                
-                child:FutureBuilder(
-                  
-                  future: _initializeVideoPlayerFuture,
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.done) {
-                      // If the VideoPlayerController has finished initialization, use
-                      // the data it provides to limit the aspect ratio of the video.
-                      return AspectRatio(
-                        aspectRatio: _controller.value.aspectRatio,
-                        // Use the VideoPlayer widget to display the video.
-                        child: VideoPlayer(_controller),
-                      );
-                    } else {
-                      // If the VideoPlayerController is still initializing, show a
-                      // loading spinner.
-                      return Center(child: CircularProgressIndicator());
-                    }
-                  },
-                ),
-              ),
-                  
-              
-              Container(
-                alignment: Alignment(-0.8,-0.2),
-
-
-                child:FloatingActionButton(
-                  
-                  onPressed: () {
-                    // Wrap the play or pause in a call to `setState`. This ensures the
-                    // correct icon is shown.
-                    setState(() {
-                      // If the video is playing, pause it.
-                      if (_controller.value.isPlaying) {
-                        _controller.pause();
-                        exercicio=1+exercicio;
-                        escolheVideo();
-                        print('semana q ta ${widget.semanaqta}');
-                      } else {
-                        // If the video is paused, play it.
-                        _controller.play();
-                      }
-                    });
-                  },
-                  // Display the correct icon depending on the state of the player.
-                  child: Icon(
-                    _controller.value.isPlaying ? Icons.pause : Icons.play_arrow,
-                  ),
-                ),
-              ),
-            
-
-            Container(
-              alignment: Alignment(0.21,0.976),//movimenta o container inteiro 
-              padding: EdgeInsets.all(20.0),
-              child:  MainScreenPortrait(dependencies: dependencies,semanaqta:widget.semanaqta)
-                  //: MainScreenLandscape(dependencies: dependencies)
-            ) 
-        ]
-      )
-    ); // This trailing comma makes auto-formatting nicer for build methods.
-  }
- /*  void recebe(int semanaqta){
-    semanaqta = semanaqta;
-     print(semanaqta);
-  } */
+  @override
+  _RelatorioState createState() => _RelatorioState();
 }
- */
+
+class _RelatorioState extends State<Relatorio> {
+  FirebaseUser currentUser;
+  final dbRef = FirebaseDatabase.instance.reference().child("Semana 1");
+  String nome1,nome2,nome3,tempo1exer1,tempo2exer1,tempo3exer1,tempo1exer2,tempo2exer2,tempo3exer2,tempo3exer3,tempo2exer3,tempo1exer3;
+final List<String> entries = <String>['A', 'B', 'C'];
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: AppBar(
+          title: Text("Relatório de Treino"),
+
+        ),
+        body: Padding(
+            // espaçamento de fora como se fosse a borda
+            padding: EdgeInsets.all(5), // o tamanho do espaçamento
+            child: ListView(children: <Widget>[
+              Column(
+                children: cabecalho() + relatorio(),
+              ),
+            ])));
+  }
+
+    List<Widget> cabecalho() {
+    return [
+      Container(
+          //padding: EdgeInsets.all(20),
+          child: Row(children: <Widget>[
+            CircleAvatar(
+                backgroundImage: AssetImage('assets/logo2.jpg'), radius: 50),
+            Container(
+                padding: EdgeInsets.all(20),
+                child: Column(
+                    children: <Widget>[Text('Semana 1'), Text('Dia 1')])),
+            Container(
+                padding: EdgeInsets.all(20),
+                child: Column(children: <Widget>[
+                  Text('data'),
+                  Icon(Icons.calendar_today)
+                ]))
+          ]))
+    ];
+  } 
+
+  List<Widget> relatorio() {
+    return [
+      Container(
+          //padding: EdgeInsets.all(20),
+          child: Column(children: <Widget>[
+            Container(
+                child: DataTable(
+              columnSpacing: 15, 
+                 
+              rows: [
+              DataRow(
+                cells: [
+                  DataCell(Text(mostraexercicios(1))),
+                  DataCell(Text(mostraexercicios(4))),
+                  DataCell(Text(mostraexercicios(5))),
+                  DataCell(Text(mostraexercicios(6))),
+                ],
+              ),
+              DataRow(
+                cells: [
+                  DataCell(Text(mostraexercicios(2))),
+                  DataCell(Text(mostraexercicios(7))),
+                  DataCell(Text(mostraexercicios(8))),
+                  DataCell(Text(mostraexercicios(9))),
+                ],
+              ),
+              DataRow(
+                cells: [
+                  DataCell(Text(mostraexercicios(3))),
+                  DataCell(Text(mostraexercicios(10))),
+                  DataCell(Text(mostraexercicios(11))),
+                  DataCell(Text(mostraexercicios(12))),
+                ],
+              ),
+            ], columns: [
+              DataColumn(
+                label: Text('Exercicios'),
+              ),
+              DataColumn(
+                label: Text("Tempo 1"),
+              ),
+              DataColumn(
+                label: Text("Tempo 2"),
+              ),
+              DataColumn(
+                label: Text("Tempo 3"),
+              ),
+            ])),
+          
+          Container(    // dores
+              child: Column(
+                children: <Widget>[
+                  Text('Dores Osteomusculares'),
+                  Row(
+                    children: <Widget>[
+                      Text('Dores Osteomusculares'),
+                      Text('Dores Osteomusculares'),
+                    
+                   // constrain height
+                   Container(
+                      height: 50.0,
+                   child:ListView.builder(
+                      padding: const EdgeInsets.all(8),
+                      itemCount: entries.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return Container(
+                          height: 50,
+                          child: Center(child: Text('Entry ${entries[index]}')),
+                        );
+                      }
+                  )
+                   )
+                  
+                  
+                    
+                    
+                    
+                    
+                    ]
+                  )
+                  ]),
+            
+          
+          
+          
+          )
+          ])
+          )
+    ];
+  }
+
+  mostraexercicios(int x) {
+    
+    Firestore.instance
+        .collection('users')
+        .document('gmKjgCrUl7fYTvym0KAkgjCnc1z2')
+        .collection('Relatorios')
+        .document('Semana 1')
+        .collection('Dia')
+        .document('Exercicios')
+        .get() //lê a informação que esta guardada
+        .then((value) {
+      nome1 = (value.data['Exercicio 1']['name']);
+      nome2 = (value.data['Exercicio 2']['name']);
+      nome3 = (value.data['Exercicio 3']['name']);
+      
+
+      tempo1exer1 = (value.data['Exercicio 1']['tempo 1']);
+      tempo2exer1 = (value.data['Exercicio 1']['tempo 2']);
+      tempo3exer1 = (value.data['Exercicio 1']['tempo 3']);
+
+      tempo1exer2 = (value.data['Exercicio 2']['tempo 1']);
+      tempo2exer2 = (value.data['Exercicio 2']['tempo 2']);
+      tempo3exer2 = (value.data['Exercicio 2']['tempo 3']);
+
+      tempo1exer3 = (value.data['Exercicio 3']['tempo 1']);
+      tempo2exer3 = (value.data['Exercicio 3']['tempo 2']);
+      tempo3exer3 = (value.data['Exercicio 3']['tempo 3']);
+      
+      
+    });
+    if( x == 1) {return '$nome1';}
+    if( x == 2) {return '$nome2';}
+    if( x == 3) {return '$nome3';}
+    if( x == 4) {return '$tempo1exer1';}
+    if( x == 5) {return '$tempo2exer1';}
+    if( x == 6) {return '$tempo3exer1';}
+    if( x == 7) {return '$tempo1exer2';}
+    if( x == 8) {return '$tempo2exer2';}
+    if( x == 9) {return '$tempo3exer2';}
+    if( x == 10) {return '$tempo1exer3';}
+    if( x == 11) {return '$tempo2exer3';}
+    if( x == 12) {return '$tempo3exer3';}   
+      
+  }
+  // TODO fazer melhor esta parte, uma classe só para pegar os dados da nuvem
+}
+
+// fazer aparecer na tabela o relatorio

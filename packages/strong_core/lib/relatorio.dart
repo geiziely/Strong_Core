@@ -24,7 +24,7 @@ class _RelatorioState extends State<Relatorio> {
   FirebaseUser currentUser;
   final dbRef = FirebaseDatabase.instance.reference().child("Semana 1");
   String nome1,nome2,nome3,tempo1exer1,tempo2exer1,tempo3exer1,tempo1exer2,tempo2exer2,tempo3exer2,tempo3exer3,tempo2exer3,tempo1exer3;
-
+final List<String> entries = <String>['A', 'B', 'C'];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,10 +42,10 @@ class _RelatorioState extends State<Relatorio> {
             ])));
   }
 
-  /*    List<Widget> cabecalho() {
+    /* List<Widget> cabecalho() {
     return [
       Container(
-          padding: EdgeInsets.all(20),
+          //padding: EdgeInsets.all(20),
           child: Row(children: <Widget>[
             CircleAvatar(
                 backgroundImage: AssetImage('assets/logo2.jpg'), radius: 50),
@@ -61,124 +61,34 @@ class _RelatorioState extends State<Relatorio> {
                 ]))
           ]))
     ];
-  } */
+  }  */
 
   List<Widget> relatorio() {
     return [
-      Container(
-          padding: EdgeInsets.all(20),
-          child: Row(children: <Widget>[
-            Container(
-                child: DataTable(
-              columnSpacing: 15, 
-                 
-              rows: [
-              DataRow(
-                cells: [
-                  DataCell(Text(mostraexercicios(1))),
-                  DataCell(Text(mostraexercicios(4))),
-                  DataCell(Text(mostraexercicios(5))),
-                  DataCell(Text(mostraexercicios(6))),
-                ],
-              ),
-              DataRow(
-                cells: [
-                  DataCell(Text(mostraexercicios(2))),
-                  DataCell(Text(mostraexercicios(7))),
-                  DataCell(Text(mostraexercicios(8))),
-                  DataCell(Text(mostraexercicios(9))),
-                ],
-              ),
-              DataRow(
-                cells: [
-                  DataCell(Text(mostraexercicios(3))),
-                  DataCell(Text(mostraexercicios(10))),
-                  DataCell(Text(mostraexercicios(11))),
-                  DataCell(Text(mostraexercicios(12))),
-                ],
-              ),
-            ], columns: [
-              DataColumn(
-                label: Text("Exercicios"),
-              ),
-              DataColumn(
-                label: Text("Tempo 1"),
-              ),
-              DataColumn(
-                label: Text("Tempo 2"),
-              ),
-              DataColumn(
-                label: Text("Tempo 3"),
-              ),
-            ]))
-          ]))
+      Container( 
+       
+              height: 200.0,
+              width:250,
+  child: ListView(
+    scrollDirection: Axis.vertical,
+    children: <Widget>[
+      RaisedButton(
+        onPressed: null,
+        child: Text("Facebook"),
+      ),
+      
+      RaisedButton(
+        onPressed: null,
+        child: Text("Google"),
+      )
+    ],
+  ),
+          )
+        
     ];
-  }
+  } //TODO pegar a lista de dores do firebase e fazer com que apareça aqui.
 
- /*  List<Widget> relatorio() {
-    final dbRef = FirebaseDatabase.instance.reference().child("pets");
-    return [
-      FutureBuilder(
-          future: dbRef.once(),
-          builder: (context, AsyncSnapshot<DataSnapshot> snapshot) {
-            if (snapshot.hasData) {
-              lists.clear();
-              Map<dynamic, dynamic> values = snapshot.data.value;
-              values.forEach((key, values) {
-                lists.add(values);
-              });
-              return new ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: lists.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return Card(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text("Name: " + lists[index]["name"]),
-                          Text("Age: " + lists[index]["age"]),
-                          Text("Type: " + lists[index]["type"]),
-                        ],
-                      ),
-                    );
-                  });
-            }
-            return CircularProgressIndicator();
-          })
-    ];
-  } */
-
-  /*  class ExerciciosView extends StatelessWidget {
-  final List< exercicios;
-
-  ExerciciosView(this.exercicios);
-
-  @override
-  Widget build(BuildContext context) {
-    List<Widget> children = new List<Widget>();
-    exercicios.forEach((item) {
-      children.add(
-        new Row(
-          children: <Widget>[
-            new Text(item),
-          ],
-        ),
-      );
-      // Add spacing between the lines:
-      children.add(
-        new SizedBox(
-          height: 5.0,
-        ),
-      );
-    });
-    return ListView(
-      padding: EdgeInsets.fromLTRB(25.0, 25.0, 25.0, 75.0),
-      children: children,
-    );
-  }
-  }  */
-
-  mostraexercicios(int x) {
+  /* mostraexercicios(int x) {
     
     Firestore.instance
         .collection('users')
@@ -192,6 +102,7 @@ class _RelatorioState extends State<Relatorio> {
       nome1 = (value.data['Exercicio 1']['name']);
       nome2 = (value.data['Exercicio 2']['name']);
       nome3 = (value.data['Exercicio 3']['name']);
+      
 
       tempo1exer1 = (value.data['Exercicio 1']['tempo 1']);
       tempo2exer1 = (value.data['Exercicio 1']['tempo 2']);
@@ -218,8 +129,10 @@ class _RelatorioState extends State<Relatorio> {
     if( x == 9) {return '$tempo3exer2';}
     if( x == 10) {return '$tempo1exer3';}
     if( x == 11) {return '$tempo2exer3';}
-    if( x == 12) {return '$tempo3exer3';}    
-  }
+    if( x == 12) {return '$tempo3exer3';}   
+      
+  } */
+  // TODO fazer melhor esta parte, uma classe só para pegar os dados da nuvem
 }
 
 // fazer aparecer na tabela o relatorio
